@@ -1,0 +1,14 @@
+python-dotenv
+flask
+flask_socketio
+python-dateutil
+openai
+requests
+google-generativeai
+opencc-python-reimplemented
+pandas
+pdfplumber
+frontend
+PyMuPDF==1.23.8
+tools
+openpyxl

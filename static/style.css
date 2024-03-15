@@ -1,0 +1,201 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.panel {
+  overflow: auto;
+}
+
+#gutter {
+  background: #aaa;
+  width: 5px; /* 拖动手柄的宽度 */
+  cursor: ew-resize;
+}
+
+#pdf-viewer {
+  width: 70%;
+}
+
+/* ...原有样式... */
+
+#json-viewer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 平均分配空间 */
+  height: 100%;
+  width: 30% /* 撑满父级容器的宽度 */
+}
+
+#table-container {
+  flex-grow: 1; /* 让内容部分占据大部分空间 */
+  /*overflow-y: auto;*/ /* 内容过多时允许滚动 */
+}
+
+
+#progress-container-wrapper {
+  width: 100%;
+  flex-grow: 1;
+  text-align: center;
+}
+
+#progress-container {
+  width: 100%;
+  background-color: #ddd;
+  flex-grow: 1;
+  /* 其他样式 */
+}
+
+#progress-status {
+  mix-blend-mode: difference;
+  color: rgb(1, 1, 1); /* 默认颜色，将在深色背景上显示为黑色 */
+}
+
+#second-upload-form {
+  display: flex;
+  flex-direction: row; /* 确保子元素水平排列 */
+  align-items: center; /* 如有必要，可以垂直居中对齐 */
+  margin-right: 10px; /* 按钮间隔 */
+}
+
+.btn {
+  margin: 0 auto; /* 自动外边距实现水平居中 */
+
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#second-upload-form button {
+  margin-top: 10px; /* 在按钮之间添加一些间距 */
+}
+
+h3 {
+  text-align: center;
+  margin: 10px 5px;
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+/* 表格的基本样式 */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #282c34; /* 暗色背景 */
+  color: #f8f8f2; /* 浅色文本 */
+  font-family: "Söhne Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace !important; /* 代码风格字体 */
+  font-size: 13px; /* 设置字体大小 */
+  margin-bottom: 20px;
+}
+
+/* 第一列样式 */
+.data-table td:first-child, .data-table th:first-child {
+  color: #DE4248; /* 第一列颜色 */
+}
+
+/* 第二列样式 */
+.data-table td:nth-child(2), .data-table th:nth-child(2) {
+  color: #4AA480; /* 第二列颜色 */
+}
+
+/* 其他样式保持不变 */
+
+.data-table th, .data-table td {
+  border: 1px solid #3c3f41;
+  padding: 8px;
+  text-align: left;
+}
+
+/* 表头样式 */
+.data-table thead th {
+  background-color: #21252b; /* 暗色背景 */
+  color: #61afef; /* 浅蓝色文本 */
+}
+
+/* 表格行的悬停效果 */
+.data-table tr:hover {
+  background-color: #32363e;
+}
+
+/* 调整行的奇偶背景色 */
+.data-table tr:nth-child(odd) {
+  background-color: #000000;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #000000;
+}
+
+/* 表格滚动条样式（仅适用于 Webkit 浏览器） */
+#json-viewer::-webkit-scrollbar {
+  width: 8px;
+}
+
+#json-viewer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#json-viewer::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+#json-viewer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+#upload-form {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px; /* 保持一些底部间距 */
+  display: flex;
+}
+
+#upload-btn:hover {
+    background-color: #45a049;
+}
+
+.icon-md {
+  stroke-width: 1.5;
+  height: 18px;
+  width: 18px;
+}
+
+.icon-clicked {
+  stroke: #0815a7
+}
+
+/* 非模态窗口样式 */
+.float-window {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  right: 10px; /* 距离右边的位置 */
+  top: 10px; /* 距离顶部的位置 */
+  width: 300px; /* 宽度 */
+  background-color: #fefefe;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.float-window-content {
+  /* 内容样式 */
+} 
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
