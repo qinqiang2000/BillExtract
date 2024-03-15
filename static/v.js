@@ -234,9 +234,42 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('progress-container-wrapper').style.display = 'block';
         document.getElementById('progress-status').style.display = 'block';
 
-        // 更新 embed 标签的 src 属性
         var pdfViewer = document.getElementById('pdf-viewer');
-        var embedTag = '<embed src="/uploaded?filepath=' + encodeURIComponent(uploadedFileName) + '" type="application/pdf" width="100%" height="100%" />';
+
+        // 判断uploadedFileName是否是pdf文件
+        if (uploadedFileName.endsWith('.pdf')) {
+          // 更新 embed 标签的 src 属性
+          var embedTag = '<embed src="/uploaded?filepath=' + encodeURIComponent(uploadedFileName) + '" type="application/pdf" width="100%" height="100%" />';
+        } 
+        else {
+          // 图形控制按钮
+          var embedTag = `
+          <div class="image-container">
+              <img id="preview-image" src="/uploaded?filepath=`+ encodeURIComponent(uploadedFileName)  +`" alt="预览图片">
+          </div>
+          <div class="btn-img" style="text-align: center; margin-top: 30px;">
+              <button onclick="zoomIn()" aria-label="放大" style="border: none; background-color: transparent; cursor: pointer;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zoom-in">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="11" y1="8" x2="11" y2="14"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg></button>
+              <button onclick="zoomOut()" aria-label="缩小" style="border: none; background-color: transparent; cursor: pointer;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zoom-out">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg></button>
+              <button onclick="rotate()" aria-label="旋转" style="border: none; background-color: transparent; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rotate-cw">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15C19.35 18.65 15.95 21 12 21c-4.42 0-8-3.58-8-8s3.58-8 8-8c1.66 0 3.2 0.51 4.45 1.38"></path>
+                </svg>
+              </button>
+          </div>
+          `
+        }
         pdfViewer.innerHTML = embedTag;
 
         document.getElementById('json-viewer').style.display = 'block';

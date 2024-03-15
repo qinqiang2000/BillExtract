@@ -13,10 +13,6 @@
   cursor: ew-resize;
 }
 
-#pdf-viewer {
-  width: 70%;
-}
-
 /* ...原有样式... */
 
 #json-viewer {
@@ -198,4 +194,52 @@ h3 {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+
+#pdf-viewer {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 确保内容在容器的顶部和底部 */
+  height: 100vh; /* 让body占满整个视口高度 */
+  margin: 0; /* 去除默认的margin */
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; /* 允许图片容器填充剩余空间，确保按钮在底部 */
+}
+
+#preview-image {
+  transition: transform 0.25s ease;
+  max-width: 100%; /* Prevent image from being larger than its container */
+  max-height: 80vh; /* Adjust based on your needs */
+}
+
+.btn-img {
+  position: relative; /* 或absolute，取决于布局需求 */
+  z-index: 10; /* 确保这个值大于图片的z-index */
+}
+
+.btn-img button {
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0; /* 上下边距20px, 根据需要调整 */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-img button:hover svg {
+  stroke: #007bff; /* 鼠标悬停时改变图标颜色 */
+}
+
+.btn-img button:focus {
+  outline: none;
 }

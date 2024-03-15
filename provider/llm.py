@@ -46,7 +46,8 @@ def after_extract(result):
         return """ {"Doc Type": "json.loads出错"}"""
 
     # 遍历列表，item如果没有Usage，则通过计算获取
-    new_order = ['Type', 'Date', 'Current reading', 'Last reading', 'Usage', 'Unit price', 'Total amount', 'Additional fees']
+    new_order = ['Type', 'Date', 'Current reading', 'Last reading', 'Usage', 'Unit price', 'Total amount',
+                 'Additional fees']
     for i, item in enumerate(ret):
         if "Usage" not in item:
             # 将item["Current reading"]和item["Last reading"]转换为数字
@@ -100,27 +101,17 @@ def extract(text, text_id=""):
         # 模拟延时，睡眠1秒
         time.sleep(1)
         return """[
-          {
-            "Type": "电费",
-            "Date": "2024-01",
-            "Current reading": "3230.42",
-            "Unit price": 1.017,
-            "Total price": 35325.19,
-            "Additional fees": null
-          },
-          {
-            "Type": "水费",
-            "Date": "2024-01",
-            "Total price": 889.20
-          },
-          {
-            "Type": "电费",
-            "Date": "2024-01",
-            "Current reading": "58",
-            "Unit price": 1.017,
-            "Total price": 394.60,
-            "Additional fees": null
-          }
+            {
+                "Type": "电费",
+                "Date": "2023/12/25",
+                "Current reading": 11727,
+                "Last reading": 11403.67,
+                "Multiplier": 1,
+                "Usage": 323.33,
+                "Unit price": 0.008,
+                "Total amount": 190.11,
+                "Additional fees": 9.05
+            }
         ]
     """
 
