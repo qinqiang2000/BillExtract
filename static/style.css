@@ -5,6 +5,7 @@
 
 .panel {
   overflow: auto;
+  overflow-y: scroll;
 }
 
 #gutter {

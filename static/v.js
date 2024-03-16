@@ -3,6 +3,12 @@ var currentFilename = '';
 // 存储选择的文件和处理状态的数组
 var filesToUpload = [];
 
+var isDragging = false;
+var leftPanel = document.getElementById('pdf-viewer');
+var rightPanel = document.getElementById('json-viewer');
+var gutter = document.getElementById('gutter');
+var container = document.getElementById('container');
+
 function addFiles(newFiles) {
   filesToUpload = []
   for (var i = 0; i < newFiles.length; i++) {
@@ -54,6 +60,9 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('progress-status').style.display = 'none';
       document.getElementById('second-upload-form').style.display = 'flex';
       // document.getElementById('json-code').style.display = 'none';
+
+      // 滚动到顶部
+      rightPanel.scrollTop = 0;
     }
   });
 
@@ -62,10 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('table-container').style.display = 'block';
 
-  /*   var formattedJson = JSON.stringify(data.data, null, 2); // 2代表使用两个空格缩进;
-    document.getElementById('json-code').innerHTML = `<code class="json">${formattedJson}</code>`;
-    hljs.highlightBlock(document.getElementById('json-code')); */
-    
     createTableList(data.data, data.page)
   });
 
@@ -75,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('json-code').style.display = 'block';
     document.getElementById('json-code').innerHTML = `<code class="json">${data.text}</code>`;
     hljs.highlightBlock(document.querySelector('#json-code code'));
+    rightPanel.scrollTop = rightPanel.scrollHeight;
   });
 
   //  创建一个表格
@@ -320,12 +326,6 @@ document.addEventListener('DOMContentLoaded', function () {
     addFiles(filteredFiles);
     upload_one_file(filteredFiles[0]);
   }
-
-  var isDragging = false;
-  var leftPanel = document.getElementById('pdf-viewer');
-  var rightPanel = document.getElementById('json-viewer');
-  var gutter = document.getElementById('gutter');
-  var container = document.getElementById('container');
 
   gutter.addEventListener('mousedown', function (e) {
     e.preventDefault();
