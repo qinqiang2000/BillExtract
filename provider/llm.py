@@ -7,6 +7,7 @@ from opencc import OpenCC
 from dateutil import parser
 
 from provider.llm_azure import LLMAzureOpenAI
+from provider.llm_azure_stream import LLMAzureOpenAIStream
 from provider.llm_gemini import LLMGemini
 from provider.llm_moonshot import LLMMoonshot
 from provider.llm_openai import LLMOpenAI
@@ -22,7 +23,7 @@ class Channel(Enum):
     GEMINI_PRO = 5
     AZURE_OPENAI = 6
     MOONSHOT = 7
-
+    AZURE_OPENAI_STREAM = 9
 
 # 取环境变量LLM_MODEL的值，如果没有，则默认为GPT4
 channel = Channel(int(os.getenv("LLM_MODEL", Channel.GPT4.value)))
@@ -37,8 +38,33 @@ def before_extract(text):
     return text
 
 
+# 定义函数，处理json字符串不合法的情况
+def remove_illegal(json_str):
+    # 定义一个函数，该函数用于计算表达式并返回结果
+    def eval_expression(match):
+        expression = match.group(2).strip()  # 移除头尾的空白字符，包括换行符
+        try:
+            # 计算表达式的值
+            result = eval(expression)
+            # 将结果格式化为保留两位小数的字符串
+            result = f"{result:.2f}"
+            # 返回替换字符串，即字段名和计算后的结果
+            return f'{match.group(1)}: {result}'
+        except Exception as e:
+            print(f"Error evaluating expression '{expression}': {e}")
+            return match.group(0)  # 发生错误时返回原始匹配字符串
+
+    # 使用正则表达式查找并替换表达式
+    pattern = re.compile(r'("Total amount"|"Additional fees"|"Usage"): ([\d\.\s\+\-\*]+)', re.MULTILINE)
+    updated_string = pattern.sub(eval_expression, json_str)
+
+    return updated_string
+
+
 # 后处理
 def after_extract(result):
+    result = remove_illegal(result)
+
     try:
         ret = json.loads(result)
     except Exception as e:
@@ -46,18 +72,25 @@ def after_extract(result):
         return """ {"Doc Type": "json.loads出错"}"""
 
     # 遍历列表，item如果没有Usage，则通过计算获取
-    new_order = ['Type', 'Date', 'Current reading', 'Last reading', 'Usage', 'Unit price', 'Total amount',
+    new_order = ['Type', 'Date', 'Current reading', 'Last reading', 'Usage', 'Multiplier', 'Unit price', 'Total amount',
                  'Additional fees']
     for i, item in enumerate(ret):
         if "Usage" not in item:
+            # 校验是否为空
+            if "Current reading" not in item or "Last reading" not in item or "Multiplier" not in item:
+                continue
+
+            # 如果item["Current reading"]和item["Last reading"]不是数字，则跳过
+            if not item["Current reading"].replace(".", "").isdigit() or not item["Last reading"].replace(".", "").isdigit() or not item["Multiplier"].replace(".", "").isdigit():
+                continue
+
             # 将item["Current reading"]和item["Last reading"]转换为数字
             item["Current reading"] = float(item["Current reading"])
             item["Last reading"] = float(item["Last reading"])
             # 如果item["Multiplier"]不存在，则默认为1
             item["Multiplier"] = float(item.get("Multiplier", 1))
-
             item["Usage"] = round((item["Current reading"] - item["Last reading"]) * item["Multiplier"], 1)
-            # 调整 Usage在item中的位置，放在Date之后
+
             ret[i] = {key: item[key] for key in new_order if key in item}
 
     chs_info = {
@@ -66,6 +99,7 @@ def after_extract(result):
         "Current reading": "本次读数",
         "Last reading": "上次读数",
         "Usage": "用量",
+        "Multiplier": "倍比",
         "Unit price": "单价",
         "Total amount": "总价",
         "Additional fees": "电费附加费用",
@@ -85,18 +119,18 @@ def after_extract(result):
 
 
 # 入口，包括事前、事中、事后处理
-def extract_invoice(text, text_id=""):
+def extract_bill(text, text_id="", socket_io=None):
     # 事前
     ret = before_extract(text)
 
     # 事中
-    ret = extract(ret, text_id)
+    ret = extract(ret, text_id, socket_io)
 
     # 事后
     return after_extract(ret)
 
 
-def extract(text, text_id=""):
+def extract(text, text_id="", socket_io=None):
     if channel == Channel.MOCK:
         # 模拟延时，睡眠1秒
         time.sleep(1)
@@ -130,6 +164,9 @@ def extract(text, text_id=""):
 
     if channel == channel.AZURE_OPENAI:
         return LLMAzureOpenAI().generate_text(text, base_prompt, text_id)
+
+    if channel == channel.AZURE_OPENAI_STREAM:
+        return LLMAzureOpenAIStream(socket_io).generate_text(text, base_prompt, text_id)
 
     if channel == channel.MOONSHOT:
         return LLMMoonshot("moonshot-v1-8k").generate_text(text, base_prompt, text_id)

@@ -88,7 +88,7 @@ def extract_invoice_content(doc_path):
             break
 
         # LLM提取要素
-        ret = llm.extract_invoice(text, os.path.basename(doc_path))
+        ret = llm.extract_bill(text, os.path.basename(doc_path))
         content.append(ret)
 
     json_content = [json.loads(item) for item in content]

@@ -34,7 +34,7 @@ def process_data_and_emit_progress(doc_path, excel_handler):
 
         # LLM提取要素
         print(f"正在LLM提取第{page_no}页...")
-        ret = llm.extract_invoice(text, filename)
+        ret = llm.extract_bill(text, filename)
 
         # 持久化
         excel_handler.add_row_to_dataframe({'filename': filename, 'page': page_no,

@@ -13,10 +13,10 @@ function zoomOut() {
 
 function rotate() {
     rotation += 90;
-    updateTransform();
+    updateTransform(false);
 }
 
-function updateTransform() {
+function updateTransform(zoom=true) {
     const image = document.getElementById('preview-image');
     image.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
 }

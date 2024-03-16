@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('progress-container-wrapper').style.display = 'none';
       document.getElementById('progress-status').style.display = 'none';
       document.getElementById('second-upload-form').style.display = 'flex';
+      // document.getElementById('json-code').style.display = 'none';
     }
   });
 
@@ -60,7 +61,20 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!data.data) return
 
     document.getElementById('table-container').style.display = 'block';
+
+  /*   var formattedJson = JSON.stringify(data.data, null, 2); // 2代表使用两个空格缩进;
+    document.getElementById('json-code').innerHTML = `<code class="json">${formattedJson}</code>`;
+    hljs.highlightBlock(document.getElementById('json-code')); */
+    
     createTableList(data.data, data.page)
+  });
+
+  // 流试数据处理
+  socket.on('stream_chunk', function (data) {
+    if (!data.text) return
+    document.getElementById('json-code').style.display = 'block';
+    document.getElementById('json-code').innerHTML = `<code class="json">${data.text}</code>`;
+    hljs.highlightBlock(document.querySelector('#json-code code'));
   });
 
   //  创建一个表格
@@ -79,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // 如果value为空，则设置为占位符
-        if (value === null || value === undefined || value === '') {
+        if (value == null || value == undefined || value == '' || value == 'null') {
           value = 'N/A';
         }
 
@@ -228,11 +242,15 @@ document.addEventListener('DOMContentLoaded', function () {
         var uploadedFileName = response.filename;
         currentFilename = uploadedFileName;
         log('文件上传成功', uploadedFileName);
-
+        
+        // 清空表格
         table = document.getElementById("table-container");
         table.innerHTML = ""
         document.getElementById('progress-container-wrapper').style.display = 'block';
         document.getElementById('progress-status').style.display = 'block';
+
+        // 清空日志
+        document.getElementById('json-code').innerHTML = ''
 
         var pdfViewer = document.getElementById('pdf-viewer');
 
@@ -242,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function () {
           var embedTag = '<embed src="/uploaded?filepath=' + encodeURIComponent(uploadedFileName) + '" type="application/pdf" width="100%" height="100%" />';
         } 
         else {
-          // 图形控制按钮
           var embedTag = `
           <div class="image-container">
               <img id="preview-image" src="/uploaded?filepath=`+ encodeURIComponent(uploadedFileName)  +`" alt="预览图片">
@@ -404,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function () {
       upload_one_file(nextFile.file);
     else {
       document.getElementById('second-upload-btn').style.display = 'flex';
-      alert('本次没有更多文件可粗里');
+      alert('本次没有更多文件');
     }
   });
 });

@@ -53,29 +53,29 @@ def index():
 # 处理标注的数据（哪一个文件，哪一页的哪个要素key识别不好, 标注的值value是）
 @app.route('/down', methods=['POST'])
 def handle_icon_click():
-    data = request.json
-    filename = data['filename']
-    page = int(data['page'])  # 从1开始
-    key = data['key']
-    val = data['value']
-    clicked = data['clicked']
-
-    if not f"{filename}_{page}" in llm_result:
-        return jsonify({'status': 'error', 'msg': f'{filename}和{page}没有对应的数据'})
-
-    ret = llm_result[f"{filename}_{page}"]
-    raw = ocr_result[f"{filename}_{page}"]
-
-    anno_json = json.loads(anno_result[f"{filename}_{page}"])
-    anno_json[key] = val
-    anno = anno_result[f"{filename}_{page}"] = json.dumps(anno_json, ensure_ascii=False, indent=4)
-
-    if clicked:
-        excel_handler.update_row(filename, page, ret, anno, key, raw)
-    else:
-        excel_handler.remove_key_from_down(filename, page, key)
-
-    excel_handler.save_dataframe_to_excel()
+    # data = request.json
+    # filename = data['filename']
+    # page = int(data['page'])  # 从1开始
+    # key = data['key']
+    # val = data['value']
+    # clicked = data['clicked']
+    #
+    # if not f"{filename}_{page}" in llm_result:
+    #     return jsonify({'status': 'error', 'msg': f'{filename}和{page}没有对应的数据'})
+    #
+    # ret = llm_result[f"{filename}_{page}"]
+    # raw = ocr_result[f"{filename}_{page}"]
+    #
+    # anno_json = json.loads(anno_result[f"{filename}_{page}"])
+    # anno_json[key] = val
+    # anno = anno_result[f"{filename}_{page}"] = json.dumps(anno_json, ensure_ascii=False, indent=4)
+    #
+    # if clicked:
+    #     excel_handler.update_row(filename, page, ret, anno, key, raw)
+    # else:
+    #     excel_handler.remove_key_from_down(filename, page, key)
+    #
+    # excel_handler.save_dataframe_to_excel()
 
     return jsonify({'status': 'success'})
 
@@ -166,7 +166,7 @@ def process_data_and_emit_progress(doc_path):
 
         # LLM提取要素
         pg.set_progress(int(75*page_no/total), f"正在LLM提取第{page_no}页...")
-        ret = llm.extract_invoice(text, filename)
+        ret = llm.extract_bill(text, filename, socketio)
 
         # 完成一次任务，给前端发送进度
         info_data(ret, page_no)

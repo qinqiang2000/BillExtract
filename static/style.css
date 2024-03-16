@@ -211,17 +211,26 @@ h3 {
   justify-content: center;
   align-items: center;
   flex-grow: 1; /* 允许图片容器填充剩余空间，确保按钮在底部 */
+  max-height: 80vh; /* 或其他合适的高度 */
+  margin: auto;
 }
 
 #preview-image {
   transition: transform 0.25s ease;
   max-width: 100%; /* Prevent image from being larger than its container */
   max-height: 80vh; /* Adjust based on your needs */
+  /*transform-origin: top center; /* 调整为需要的原点位置 */
 }
 
 .btn-img {
   position: relative; /* 或absolute，取决于布局需求 */
   z-index: 10; /* 确保这个值大于图片的z-index */
+  bottom: 0; /* 定位到父容器的底部 */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 70%;
+  text-align: center; /* 让文本居中显示 */
 }
 
 .btn-img button {

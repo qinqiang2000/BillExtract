@@ -1,12 +1,20 @@
 import json
 import os
 import logging
+import re
+
 from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv(override=True)
 client = OpenAI(api_key=os.environ['MOONSHOT_API_KEY'], base_url="https://api.moonshot.cn/v1")
 
+# 去除 JSON 字符串中的单行注释
+def remove_comments(json_str):
+    # 使用正则表达式匹配以 // 开头的注释，并去除这些注释
+    # 注意：这可能会误删除字符串内部包含 // 的情况
+    no_comments = re.sub(r'//.*', '', json_str)
+    return no_comments
 
 class LLMMoonshot:
     def __init__(self, model):
@@ -28,13 +36,18 @@ class LLMMoonshot:
             print(f"调用openai出错：{e}")
             return json.dumps({"error": "fail: 调用大模型接口出错"})
 
-        print("total tokens:", response.usage.total_tokens)
-        print("system_fingerprint:", response.system_fingerprint)
+        result = response.choices[0].message.content
+        logging.info(f"total tokens: {response.usage.total_tokens}")
 
-        content = response.choices[0].message.content
-        first_brace_index = content.find('{')
-        last_brace_index = content.rfind('}')
-        text = content[first_brace_index:last_brace_index + 1]
-        logging.info(f"{self.model}:{reqid} extract from response: {text}")
+        result = result[result.find('['):result.rfind(']') + 1]
+        logging.info(result)
 
-        return text
+        # 去除 JSON 字符串中的单行注释
+        result = remove_comments(result)
+        logging.info(f"\nclean json:\n{result}")
+
+        # 去除usage产生的可能错误的JSON字符串
+        result = re.sub(r'^.*?"Usage": .*? - .*(?=\n|$)', '', result, flags=re.MULTILINE)
+        logging.info(f"clean usage: {result}")
+
+        return result
