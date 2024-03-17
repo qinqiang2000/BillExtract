@@ -20,7 +20,7 @@ def webhook():
     # 切换工作目录并执行脚本
     try:
         os.chdir(work_dir)
-        subprocess.run(['sh', script_path], check=True)
+        subprocess.run(['sh', "start.sh"], check=True)
         logging.debug("Successfully executed the script.")
     except Exception as e:
         logging.debug(f"Error executing the script: {e}")
