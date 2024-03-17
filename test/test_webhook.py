@@ -11,8 +11,8 @@ def webhook():
     data = request.json
 
     # 打印或处理数据
-    REPO_DIR = "/root/" + data.repository.name
-    logging.debug("Received webhook data:", data.repository.name)
+    REPO_DIR = "/root/" + data['repository']['name']
+    logging.debug("Received webhook data:", data['repository']['name'])
 
     script_path = REPO_DIR + "/start.sh"
     work_dir = REPO_DIR

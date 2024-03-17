@@ -16,6 +16,14 @@ function addFiles(newFiles) {
   }
 }
 
+function containsKeyword(value, keywords) {
+  if (typeof value !== 'string') {
+    return false;
+  }
+  // 使用Array.prototype.some检查是否至少有一个关键字包含在value中
+  return keywords.some(keyword => value.includes(keyword));
+}
+
 // 获取当前时间的函数
 function getCurrentTime() {
   const now = new Date();
@@ -99,7 +107,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // 如果value为空，则设置为占位符
-        if (value == null || value == undefined || value == '' || value == 'null') {
+        const keywords = ["null", "undefined", "不明确"];
+        if (value == null || value == undefined || value == '' || containsKeyword(value, keywords)) {
           value = 'N/A';
         }
 

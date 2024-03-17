@@ -18,8 +18,8 @@ from provider.prompt import base_prompt
 class Channel(Enum):
     MOCK = 1
     RPA = 2
-    GPT4 = 3
-    GPT35 = 4
+    GPT4 = 4
+    GPT35 = 3
     GEMINI_PRO = 5
     AZURE_OPENAI = 6
     MOONSHOT = 7
@@ -32,6 +32,10 @@ channel = Channel(int(os.getenv("LLM_MODEL", Channel.GPT4.value)))
 def switch_channel(new_channel):
     global channel
     channel = Channel(new_channel)
+
+
+def is_number(value):
+    return isinstance(value, (int, float))
 
 
 def before_extract(text):
@@ -87,18 +91,22 @@ def after_extract(result):
             if "Current reading" not in item or "Last reading" not in item or "Multiplier" not in item:
                 continue
 
-            # 如果item["Current reading"]和item["Last reading"]不是数字，则跳过
-            if not item["Current reading"].replace(".", "").isdigit() or not item["Last reading"].replace(".",
-                                                                                                          "").isdigit() or not \
-            item["Multiplier"].replace(".", "").isdigit():
-                continue
+            try:
+                # 如果item["Current reading"]和item["Last reading"]不是数字，则跳过
+                if not item["Current reading"].replace(".", "").isdigit() \
+                        or not item["Last reading"].replace(".", "").isdigit() or not \
+                        item["Multiplier"].replace(".", "").isdigit():
+                    continue
 
-            # 将item["Current reading"]和item["Last reading"]转换为数字
-            item["Current reading"] = float(item["Current reading"])
-            item["Last reading"] = float(item["Last reading"])
-            # 如果item["Multiplier"]不存在，则默认为1
-            item["Multiplier"] = float(item.get("Multiplier", 1))
-            item["Usage"] = round((item["Current reading"] - item["Last reading"]) * item["Multiplier"], 1)
+                # 将item["Current reading"]和item["Last reading"]转换为数字
+                item["Current reading"] = float(item["Current reading"])
+                item["Last reading"] = float(item["Last reading"])
+                # 如果item["Multiplier"]不存在，则默认为1
+                item["Multiplier"] = float(item.get("Multiplier", 1))
+                item["Usage"] = round((item["Current reading"] - item["Last reading"]) * item["Multiplier"], 1)
+            except Exception as e:
+                print(f"计算Usage出错：{e}")
+                continue
 
             ret[i] = {key: item[key] for key in new_order if key in item}
 
@@ -107,11 +115,14 @@ def after_extract(result):
         "Date": "抄表日期",
         "Current reading": "本次读数",
         "Last reading": "上次读数",
-        "Usage": "用量",
-        "Multiplier": "倍比",
+        # "Usage": "用量",
+        "Multiplier": "倍率",
         "Unit price": "单价",
-        "Total amount": "总价",
-        "Additional fees": "电费附加费用",
+        "Electricity fee": "电费",
+        "Water fee": "水费",
+        "Sewage charge": "排污费",
+        "Energy charge": "电损",
+        "Additional fees": "附加费用",
     }
 
     # 将英文key 转换为中文
