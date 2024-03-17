@@ -23,7 +23,7 @@ class Channel(Enum):
     GEMINI_PRO = 5
     AZURE_OPENAI = 6
     MOONSHOT = 7
-    AZURE_OPENAI_STREAM = 9
+
 
 # 取环境变量LLM_MODEL的值，如果没有，则默认为GPT4
 channel = Channel(int(os.getenv("LLM_MODEL", Channel.GPT4.value)))
@@ -63,6 +63,13 @@ def remove_illegal(json_str):
 
 # 后处理
 def after_extract(result):
+    # 提取字符串中的json数组部分
+    result = result[result.find('['):result.rfind(']') + 1]
+    # 去除 JSON 字符串中的单行注释
+    result = re.sub(r'//.*', '', result)
+    # 去除usage产生的可能错误的JSON字符串
+    result = re.sub(r'^.*?"Usage": .*? - .*(?=\n|$)', '', result, flags=re.MULTILINE)
+    # 处理 JSON 字符串中的算术表达式
     result = remove_illegal(result)
 
     try:
@@ -81,7 +88,9 @@ def after_extract(result):
                 continue
 
             # 如果item["Current reading"]和item["Last reading"]不是数字，则跳过
-            if not item["Current reading"].replace(".", "").isdigit() or not item["Last reading"].replace(".", "").isdigit() or not item["Multiplier"].replace(".", "").isdigit():
+            if not item["Current reading"].replace(".", "").isdigit() or not item["Last reading"].replace(".",
+                                                                                                          "").isdigit() or not \
+            item["Multiplier"].replace(".", "").isdigit():
                 continue
 
             # 将item["Current reading"]和item["Last reading"]转换为数字
@@ -154,19 +163,16 @@ def extract(text, text_id="", socket_io=None):
         return rpa.generate_text(text, base_prompt, text_id)
 
     if channel == channel.GPT35:
-        return LLMOpenAI("gpt-3.5-turbo-1106").generate_text(text, base_prompt, text_id)
+        return LLMOpenAI("gpt-3.5-turbo-1106", True, socket_io).generate_text(text, base_prompt, text_id)
 
     if channel == channel.GPT4:
-        return LLMOpenAI("gpt-4-1106-preview").generate_text(text, base_prompt, text_id)
+        return LLMOpenAI("gpt-4-1106-preview", True, socket_io).generate_text(text, base_prompt, text_id)
 
     if channel == channel.GEMINI_PRO:
         return LLMGemini("gemini-pro").generate_text(text, base_prompt, text_id)
 
     if channel == channel.AZURE_OPENAI:
-        return LLMAzureOpenAI().generate_text(text, base_prompt, text_id)
-
-    if channel == channel.AZURE_OPENAI_STREAM:
-        return LLMAzureOpenAIStream(socket_io).generate_text(text, base_prompt, text_id)
+        return LLMAzureOpenAIStream(True, socket_io).generate_text(text, base_prompt, text_id)
 
     if channel == channel.MOONSHOT:
         return LLMMoonshot("moonshot-v1-8k").generate_text(text, base_prompt, text_id)
