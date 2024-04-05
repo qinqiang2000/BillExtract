@@ -40,8 +40,7 @@ function updateExtractor(selectElement) {
   });
 }
 
-// 当文档加载完成时，执行此函数
-document.addEventListener('DOMContentLoaded', function() {
+function getExtractor() {
   // 使用 fetch 发送 GET 请求到 /extractor
   fetch('/extractor')
     .then(response => response.json()) // 解析 JSON 返回的数据
@@ -62,4 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(error => {
       console.error('Error fetching data: ', error);
     });
-});
+}
+// 当文档加载完成时，执行此函数
+document.addEventListener('DOMContentLoaded', getExtractor);

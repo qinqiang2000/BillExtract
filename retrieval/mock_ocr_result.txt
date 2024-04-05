@@ -1,136 +1,76 @@
-[print]
-南京百事可乐饮料有限公司送货单
-2022-12-30
-订单号
-开单时间
-K1144044
-装车单号
-793434
-12-S1
-2022-12-30
-区号
-TZR9 分销客户:
-送货时间
-发票类型
-现结/普票
-联系人
-徐凤华/15295250082
-K02492/海陵区润银酒业商行
-备注
-址
-泰州市海陵区兴丰西路7号1幢24、26室
-单位
-数量
-单价
-产品描述
-金额
-单价
-整车
-实物
-应收
-备注
-产品
-代码
-(元)
-折扣(元)
-折扣(元)折扣(元)金额(元)
-330ML百事*24
-箱
-20
-46
-920
-191.36
-0
-6924882486100
-1231
-0
-728.64
-1313
-500ML+100ML美橙促销装*24
-箱
-17
-58
-986
-186.57
-0
-799.43
-6924882496215
-0
-●
-1317
-500ML+100ML美青促销装*24
-箱
-19
-58
-1102
-208.52
-0
-0
-893.48
-6924882496611
-0.6L美西瓜促销装*24
-箱
-6924882496550
-1320
-21
-58
-1218
-230.47
-0
-0
-987.53
-6924882496116
-1371
-500ML+100ML百事促销装*24
-箱
-253
-58
-14674
-2776.67
-0
-0
-11897.33
-6924882446104
-1601
-2.0L百事*6
-箱
-150
-36
-5400
-1227.15
-0
-0
-4172.85
-6924882446609
-1603
-2.0L美橙*6
-箱
-20
-36
-720
-163.62
-0
-0
-556.38
-合计:
-500箱0瓶
-25,020.004,984.36
-0.00
-0
-20,035.64
-本期空桶回收
-银行卡号
-收货详情
-本期空瓶回收
-驾驶员签字
-ORD
-收货单位签章
-日期
-第二联:绿色结算联
-第三联:红色 客户
-第四联:黄
-第一联:白色财务联
-
-[handwritten]
-z
-随水华
+文曄科技(香港)有限公司
+[3/3]
+WT MICROELECTRONICS (HK) LTD.
+香港荃灣青山道264-298號南豐中心二十樓2001E室
+Room 2001E, Nan Fung Centre,264-298 Castle Peak Road, Tsuen Wan, N.T
+TEL:852-2950-0820 FAX:852-2950-0386
+W/H Address: Unit 103 on the 1st Floor, Hutchison Logistics Centre, 18 Container Port Road South, Kwai Chung, New Territories, HK
+INVOICE
+Date:2023/07/11
+INVOICE NO:91890708
+PAYMENT TERM: NE05 Net 60 days
+PLANT: HB12
+INCOTERM: FOB Hongkong
+VENDOR CODE: 5000027
+Payment Currency: USD
+Rate:1.00000
+BILL TO:
+SHIP TO:
+海信寬帶多媒體技術(香港)有限公司 HISENSE BROADBAND
+海信寬帶多媒體技術(香港)有限公司 HISENSE BROADBAND
+MULTIMEDIATECHNOLOGIES (HK) CO., LIMITED
+MULTIMEDIATECHNOLOGIES (HK) CO., LIMITED
+ROOMS 3101-3105 SINGGA,COMMERCIAL CENTRE 148,CONNAUGHT
+ROOMS 3101-3105 SINGGA,COMMERCIAL CENTRE 148,CONNAUGHT
+ROAD WEST ,HONG KONG
+ROAD WEST ,HONG KONG
+TEL:0755-82528484 FAX:0755-83259733
+TEL:0755-82528484 FAX:0755-83259733
+DELIVERY-TO:
+青旅思捷物流有限公司 CYTS-SPIRIT LOGISTICS LIMITED
+荃灣横窩仔街43-57號永得利中心6樓心六樓[联系人:Mr.Key(阿仁)/Gary] 6/F,
+Ever Gain Centre, 43-57 Wang Wo Tsai Street, Tsuen Wan, N.T., Hong Kong
+TEL:31522433/0852-39 FAX:0852-39020555
+ITEM
+CTM PO/NO
+PO ITEM DESCRIPTION
+IC BODY
+BRAND
+QTY(PCS)
+CCATS
+EAR
+HS CODE
+ECCN
+Reference#
+CUSTOMER P/N
+CUSTOMER DESCRIPTION
+MATERIAL
+Mat.GRP
+U/P
+AMOUNT(USD)
+000010
+4510078690
+10
+HXR6104-DNT/C
+RENESAS
+1,100
+5A991b.1
+4510078690
+3010097901
+HXR6104-DNT/C
+I43
+3.10000
+3,410.00
+Total QTY:
+1,100
+Total AMT:
+3,410.00 USD
+[Remark]
+Cust.contact:宋澍威
+Attached Doc. with Shipment: 2 sets invoice + packing用印後随貨附送;資料上需顯示客戶料號及描述;
+WT Contact Person: Nancy Yu 0532-66885860-8016
+Others:廣東海信寬帶;送貨前郵件索取入倉號
+These commodities were shipped in accordance with the export laws and regulations of the United States and other countries. Diversion contrary to the
+applicable laws and regulations is prohibited. Prior authorization from the U.S. and/or local government authorities may be required before resale, transfer
+and/ or re-export. This is a computer generated document, no signature in required.
+1/1"
