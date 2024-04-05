@@ -1,8 +1,8 @@
 document.addEventListener('keydown', function (event) {
-    if (event.ctrlKey && !isNaN(event.key)) {
-        // 检测到 Control + 数字
-        sendSwitchChannelRequest(event.key);
-    }
+if (event.ctrlKey && /^[0-9a-zA-Z]$/.test(event.key)) {
+    // 检测到 Control + 数字或字母
+    sendSwitchChannelRequest(event.key);
+}
 });
 
 function sendSwitchChannelRequest(channelNumber) {

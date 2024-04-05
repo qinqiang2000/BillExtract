@@ -6,6 +6,7 @@
 *.xls
 *.docx
 *.doc
+*.db
 .env
 
 # 忽略目标目录  

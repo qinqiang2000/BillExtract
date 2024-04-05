@@ -2,81 +2,114 @@
 <html>
 
 <head>
-    <title>缴费通知单-请款要素-提取</title>
-    <link rel="stylesheet" type="text/css" href="static/style.css">
-    <link rel="stylesheet" href="static/default.min.css">
-    <style>
-        .logo {
-            display: inline-block;
-            width: 2em;
-            height: 2em;
-            vertical-align: middle;
-            padding-bottom: 0;
-        }
-        h3 .header{
-            display: inline-block;
-            font-size: 1em;
-            vertical-align: middle;
-            padding-bottom: 0;
-        }
-    </style>
+  <title>单据要素-提取</title>
+  <link rel="stylesheet" type="text/css" href="static/style.css">
+  <link rel="stylesheet" href="static/default.min.css">
+  <style>
+    .logo {
+      display: inline-block;
+      width: 2em;
+      height: 2em;
+      vertical-align: middle;
+      padding-bottom: 0;
+    }
+
+    h3 .header {
+      display: inline-block;
+      font-size: 1em;
+      vertical-align: middle;
+      padding-bottom: 0;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="header"  style="width: 70%; text-align: center;">
-        <img src="static/logo.gif" alt="Logo" class="logo">
-        <h3 class="header" style="display: inline-block;">缴费通知单-请款要素-提取</h3>
+  <div id="header" style="width: 70%; text-align: center;">
+    <img src="static/logo.gif" alt="Logo" class="logo">
+    <h3 id="header-title" class="header" style="display: inline-block;">单据要素-提取</h3>
+  </div>
+  <div id="container" class="container">
+    <div id="pdf-viewer" class="panel">
+      <!-- 这里可以放置一个提示或者占位符 -->
+      <form id="upload-form" enctype="multipart/form-data" style="text-align: center; margin-top: 20px;">
+        <input type="file" name="file" id="file-upload" webkitdirectory directory multiple style="display: none;">
+        <button type="button" id="upload-btn" class="btn">打开文件夹</button>
+
+        <input type="file" name="file" id="single-file-upload" multiple style="display: none;">
+        <button type="button" id="single-upload-btn" class="btn">打开文件</button>
+
+      </form>
+      <div>
+      </div>
     </div>
-    <div id="container" class="container">
-        <div id="pdf-viewer" class="panel">
-            <!-- 这里可以放置一个提示或者占位符 -->
-            <form id="upload-form" enctype="multipart/form-data" style="text-align: center; margin-top: 20px;">
-                <input type="file" name="file" id="file-upload" webkitdirectory directory multiple style="display: none;">
-                <button type="button" id="upload-btn" class="btn">打开文件夹</button>
-
-                <input type="file" name="file" id="single-file-upload"  multiple style="display: none;">
-                <button type="button" id="single-upload-btn" class="btn">打开文件</button>
-
-            </form>
-            <div>
-            </div>
+    <div id="gutter" class="gutter"></div>
+    <div id="json-viewer" class="panel" style="display: none;">
+      <!-- 进度条容器 -->
+      <div id="progress-container-wrapper" style="position: sticky; top: 2px;">
+        <div id="progress-container" style="width: 100%; background-color: #ddd;">
+          <div id="progressBar" style="width: 0%; height: 20px; background-color: #4CAF50;"></div>
         </div>
-        <div id="gutter" class="gutter"></div>
-        <div id="json-viewer" class="panel" style="display: none;">
-            <!-- 进度条容器 -->
-            <div id="progress-container-wrapper" style="position: sticky; top: 2px;">
-                <div id="progress-container" style="width: 100%; background-color: #ddd;">
-                    <div id="progressBar" style="width: 0%; height: 20px; background-color: #4CAF50;"></div>
-                </div>
-                <p id="progress-status" style="text-align: center;">处理中...</p> <!-- 状态信息 -->
-            </div>
+        <p id="progress-status" style="text-align: center;">处理中...</p> <!-- 状态信息 -->
+      </div>
 
-            <!-- 表格容器 -->
-            <div id="table-container" style="display: none;">
-                <table id="json-table">
-                    <!-- JSON 表格将在这里生成 -->
-                </table>
-            </div>
+      <!-- 表格容器 -->
+      <div id="table-container" style="display: none;">
+        <table id="json-table">
+          <!-- JSON 表格将在这里生成 -->
+        </table>
+      </div>
 
-            <!-- 第二个文件上传表单 -->
-            <form id="second-upload-form" enctype="multipart/form-data" style="display: none;">
-                <input type="file" name="file" id="second-file-upload" multiple style="display: none;">
-                
-                <button type="button" id="export-btn" class="btn">导出</button>
-                <button type="button" id="next-upload-btn"  class="btn">下一个文件</button>
-                <button type="button" id="second-upload-btn"  class="btn" >上传其他文件</button>
-            </form>
-            
-            <pre id="json-code"></pre>
-        </div>
-          
+      <!-- 第二个文件上传表单 -->
+      <form id="second-upload-form" enctype="multipart/form-data" style="display: none;">
+        <input type="file" name="file" id="second-file-upload" multiple style="display: none;">
+
+        <button type="button" id="export-btn" class="btn">导出</button>
+        <button type="button" id="next-upload-btn" class="btn">下一个文件</button>
+        <button type="button" id="second-upload-btn" class="btn">上传其他文件</button>
+      </form>
+      <pre id="json-code"></pre>
     </div>
+  </div>
 
-    <script src="https://cdn.socket.io/3.1.3/socket.io.js"></script>
-    <script src="static/highlight.min.js"></script>
-    <script src="static/v.js"></script>
-    <script src="static/ctrl.js"></script>
-    <script src="static/img.js"></script>
+  <!-- 设置 -->
+  <div id="svg-icon-container" style="position: fixed; right: 20px; bottom: 20px; cursor: pointer;">
+    <svg onclick="openPopup()" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+      class="icon-md">
+      <path
+        d="M11.6439 3C10.9352 3 10.2794 3.37508 9.92002 3.98596L9.49644 4.70605C8.96184 5.61487 7.98938 6.17632 6.93501 6.18489L6.09967 6.19168C5.39096 6.19744 4.73823 6.57783 4.38386 7.19161L4.02776 7.80841C3.67339 8.42219 3.67032 9.17767 4.01969 9.7943L4.43151 10.5212C4.95127 11.4386 4.95127 12.5615 4.43151 13.4788L4.01969 14.2057C3.67032 14.8224 3.67339 15.5778 4.02776 16.1916L4.38386 16.8084C4.73823 17.4222 5.39096 17.8026 6.09966 17.8083L6.93502 17.8151C7.98939 17.8237 8.96185 18.3851 9.49645 19.294L9.92002 20.014C10.2794 20.6249 10.9352 21 11.6439 21H12.3561C13.0648 21 13.7206 20.6249 14.08 20.014L14.5035 19.294C15.0381 18.3851 16.0106 17.8237 17.065 17.8151L17.9004 17.8083C18.6091 17.8026 19.2618 17.4222 19.6162 16.8084L19.9723 16.1916C20.3267 15.5778 20.3298 14.8224 19.9804 14.2057L19.5686 13.4788C19.0488 12.5615 19.0488 11.4386 19.5686 10.5212L19.9804 9.7943C20.3298 9.17767 20.3267 8.42219 19.9723 7.80841L19.6162 7.19161C19.2618 6.57783 18.6091 6.19744 17.9004 6.19168L17.065 6.18489C16.0106 6.17632 15.0382 5.61487 14.5036 4.70605L14.08 3.98596C13.7206 3.37508 13.0648 3 12.3561 3H11.6439Z"
+        stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+      <circle cx="12" cy="12" r="2.5" stroke="currentColor" stroke-width="2"></circle>
+    </svg>
+  </div>
+  <!-- 弹出页面的容器 -->
+  <div id="popup-container" class="popup" style="display:none;">
+    <div class="popup-content">
+      <div class="popup-header">
+        <span class="popup-title">你的选择</span>
+        <button onclick="closePopup()" class="close-btn">&times;</button>
+      </div>
+      <div class="popup-body">
+        <div class="popup-item">
+          <span class="item-icon">&#x1F4B8; 请选择提取器：</span>
+          <select class="item-extractor-select" id="extractor-options" onchange="updateExtractor(this)">
+          </select>
+        </div>
+        <div class="separator"></div>
+        <div class="popup-item">
+          <span class="item-icon">&#x272A; 自定义提取器：</span>
+          <a class="item-price" href="/e" target="_blank">Go</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.socket.io/3.1.3/socket.io.js"></script>
+  <script src="static/highlight.min.js"></script>
+  <script src="static/v.js"></script>
+  <script src="static/ctrl.js"></script>
+  <script src="static/img.js"></script>
+  <script src="static/settings.js"></script>
 
 </body>
 

@@ -10,7 +10,8 @@
 
 #gutter {
   background: #aaa;
-  width: 5px; /* 拖动手柄的宽度 */
+  width: 5px;
+  /* 拖动手柄的宽度 */
   cursor: ew-resize;
 }
 
@@ -19,14 +20,18 @@
 #json-viewer {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 平均分配空间 */
+  justify-content: space-between;
+  /* 平均分配空间 */
   height: 100%;
-  width: 30% /* 撑满父级容器的宽度 */
+  width: 30%
+    /* 撑满父级容器的宽度 */
 }
 
 #table-container {
-  flex-grow: 1; /* 让内容部分占据大部分空间 */
-  /*overflow-y: auto;*/ /* 内容过多时允许滚动 */
+  flex-grow: 1;
+  /* 让内容部分占据大部分空间 */
+  /*overflow-y: auto;*/
+  /* 内容过多时允许滚动 */
 }
 
 
@@ -45,18 +50,23 @@
 
 #progress-status {
   mix-blend-mode: difference;
-  color: rgb(1, 1, 1); /* 默认颜色，将在深色背景上显示为黑色 */
+  color: rgb(1, 1, 1);
+  /* 默认颜色，将在深色背景上显示为黑色 */
 }
 
 #second-upload-form {
   display: flex;
-  flex-direction: row; /* 确保子元素水平排列 */
-  align-items: center; /* 如有必要，可以垂直居中对齐 */
-  margin-right: 10px; /* 按钮间隔 */
+  flex-direction: row;
+  /* 确保子元素水平排列 */
+  align-items: center;
+  /* 如有必要，可以垂直居中对齐 */
+  margin-right: 10px;
+  /* 按钮间隔 */
 }
 
 .btn {
-  margin: 0 auto; /* 自动外边距实现水平居中 */
+  margin: 0 auto;
+  /* 自动外边距实现水平居中 */
 
   background-color: #4CAF50;
   color: white;
@@ -68,7 +78,8 @@
 }
 
 #second-upload-form button {
-  margin-top: 10px; /* 在按钮之间添加一些间距 */
+  margin-top: 10px;
+  /* 在按钮之间添加一些间距 */
 }
 
 h3 {
@@ -82,26 +93,35 @@ h3 {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #282c34; /* 暗色背景 */
-  color: #f8f8f2; /* 浅色文本 */
-  font-family: "Söhne Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace !important; /* 代码风格字体 */
-  font-size: 13px; /* 设置字体大小 */
+  background-color: #282c34;
+  /* 暗色背景 */
+  color: #f8f8f2;
+  /* 浅色文本 */
+  font-family: "Söhne Mono", Monaco, "Andale Mono", "Ubuntu Mono", monospace !important;
+  /* 代码风格字体 */
+  font-size: 13px;
+  /* 设置字体大小 */
   margin-bottom: 20px;
 }
 
 /* 第一列样式 */
-.data-table td:first-child, .data-table th:first-child {
-  color: #DE4248; /* 第一列颜色 */
+.data-table td:first-child,
+.data-table th:first-child {
+  color: #DE4248;
+  /* 第一列颜色 */
 }
 
 /* 第二列样式 */
-.data-table td:nth-child(2), .data-table th:nth-child(2) {
-  color: #4AA480; /* 第二列颜色 */
+.data-table td:nth-child(2),
+.data-table th:nth-child(2) {
+  color: #4AA480;
+  /* 第二列颜色 */
 }
 
 /* 其他样式保持不变 */
 
-.data-table th, .data-table td {
+.data-table th,
+.data-table td {
   border: 1px solid #3c3f41;
   padding: 8px;
   text-align: left;
@@ -109,8 +129,10 @@ h3 {
 
 /* 表头样式 */
 .data-table thead th {
-  background-color: #21252b; /* 暗色背景 */
-  color: #61afef; /* 浅蓝色文本 */
+  background-color: #21252b;
+  /* 暗色背景 */
+  color: #61afef;
+  /* 浅蓝色文本 */
 }
 
 /* 表格行的悬停效果 */
@@ -147,12 +169,13 @@ h3 {
 #upload-form {
   text-align: center;
   margin-top: 20px;
-  margin-bottom: 10px; /* 保持一些底部间距 */
+  margin-bottom: 10px;
+  /* 保持一些底部间距 */
   display: flex;
 }
 
 #upload-btn:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 .icon-md {
@@ -170,18 +193,21 @@ h3 {
   display: none;
   position: fixed;
   z-index: 1;
-  right: 10px; /* 距离右边的位置 */
-  top: 10px; /* 距离顶部的位置 */
-  width: 300px; /* 宽度 */
+  right: 10px;
+  /* 距离右边的位置 */
+  top: 10px;
+  /* 距离顶部的位置 */
+  width: 300px;
+  /* 宽度 */
   background-color: #fefefe;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 20px;
   border-radius: 5px;
 }
 
 .float-window-content {
   /* 内容样式 */
-} 
+}
 
 .close {
   color: #aaa;
@@ -202,42 +228,54 @@ h3 {
   width: 70%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* 确保内容在容器的顶部和底部 */
-  height: 100vh; /* 让body占满整个视口高度 */
-  margin: 0; /* 去除默认的margin */
+  justify-content: space-between;
+  /* 确保内容在容器的顶部和底部 */
+  height: 100vh;
+  /* 让body占满整个视口高度 */
+  margin: 0;
+  /* 去除默认的margin */
 }
 
 .image-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1; /* 允许图片容器填充剩余空间，确保按钮在底部 */
-  max-height: 80vh; /* 或其他合适的高度 */
+  flex-grow: 1;
+  /* 允许图片容器填充剩余空间，确保按钮在底部 */
+  max-height: 80vh;
+  /* 或其他合适的高度 */
   margin: auto;
 }
 
 #preview-image {
   transition: transform 0.25s ease;
-  max-width: 100%; /* Prevent image from being larger than its container */
-  max-height: 80vh; /* Adjust based on your needs */
+  max-width: 100%;
+  /* Prevent image from being larger than its container */
+  max-height: 80vh;
+  /* Adjust based on your needs */
   /*transform-origin: top center; /* 调整为需要的原点位置 */
 }
 
 .btn-img {
-  position: relative; /* 或absolute，取决于布局需求 */
-  z-index: 10; /* 确保这个值大于图片的z-index */
-  bottom: 0; /* 定位到父容器的底部 */
+  position: relative;
+  /* 或absolute，取决于布局需求 */
+  z-index: 10;
+  /* 确保这个值大于图片的z-index */
+  bottom: 0;
+  /* 定位到父容器的底部 */
   position: fixed;
   bottom: 0;
   left: 0;
   width: 70%;
-  text-align: center; /* 让文本居中显示 */
+  text-align: center;
+  /* 让文本居中显示 */
 }
 
 .btn-img button {
   justify-content: center;
   align-items: center;
-  margin: 20px 0; /* 上下边距20px, 根据需要调整 */
+  margin: 20px 0;
+  /* 上下边距20px, 根据需要调整 */
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -247,9 +285,83 @@ h3 {
 }
 
 .btn-img button:hover svg {
-  stroke: #007bff; /* 鼠标悬停时改变图标颜色 */
+  stroke: #007bff;
+  /* 鼠标悬停时改变图标颜色 */
 }
 
 .btn-img button:focus {
   outline: none;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup .separator {
+  margin: 20px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.popup-content {
+  background-color: white;
+  width: 400px; /* Adjust the width as needed */
+  border-radius: 8px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.popup-header {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-title {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.popup-body {
+  padding: 10px;
+}
+
+.popup-item {
+  display: flex; /* 设置flexbox布局 */
+  align-items: center; /* 垂直居中对齐 */
+  margin: 10px 0;
+}
+
+.item-icon {
+  /* Add your icons font-family */
+  font-size: 16px;
+}
+
+.item-price {
+  font-size: 16px;
+  color: #555;
+}
+
+.item-extractor-select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  color: #555;
+  /* 如果需要，可以添加宽度或其他样式 */
 }

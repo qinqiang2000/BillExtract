@@ -1,3 +1,4 @@
+import json
 import re
 
 input_string = '''
@@ -40,4 +41,4 @@ def eval_expression(match):
 pattern = re.compile(r'("Total amount"|"Additional fees"|"Multiplier"): ([\d\.\s\+\-\*\/]+)', re.MULTILINE)
 updated_string = pattern.sub(eval_expression, input_string)
 
-print(updated_string)
+# print(updated_string)

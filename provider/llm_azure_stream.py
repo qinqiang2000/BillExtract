@@ -22,7 +22,7 @@ class LLMAzureOpenAIStream:
         self.socketio = socketio
 
     def generate_text(self, text, sys_prompt, reqid):
-        print("使用模型【Azure OpenAI】", os.environ['OPENAI_DEPLOYMENT_NAME'], reqid)
+        logging.info(f"使用模型【Azure OpenAI】stream={self.stream}, f{os.environ['OPENAI_DEPLOYMENT_NAME']}, f{reqid}")
         try:
             response = client.chat.completions.create(
                 model=os.environ['OPENAI_DEPLOYMENT_NAME'],  # model = "deployment_name"

@@ -1,13 +1,11 @@
 import logging
 import os
-
 import fitz
 
 # from retrieval.ocr_pp_local import pp_ocr
 from retrieval.ocr_ruizhen import ruizhen_ocr
 
 logging.basicConfig(format='[%(asctime)s %(filename)s:%(lineno)d] %(levelname)s: %(message)s', level=logging.INFO, force=True)
-ocr_vendor = os.environ.get("OCR_VENDOR")
 
 
 # todo: 先将page_no页写到一个单独pdf，再读(待优化）
@@ -31,19 +29,25 @@ def before_ocr(doc_path, page_no):
     return dest_path
 
 
+def mock_ocr(doc_path):
+    # 从本地文件mock_ocr_result.txt中读取mock结果
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    with open(os.path.join(dir_path, 'mock_ocr_result.txt'), 'r') as f:
+        return f.read()
+
+
 def ocr(doc_path, page_no):
     # page_no >= 0表示是pdf，需预处理
     if page_no >= 0:
         doc_path = before_ocr(doc_path, page_no)
 
-    # todo: demo, 屏蔽ppocr
-    if ocr_vendor == 'ppocr':
-        text = ruizhen_ocr(doc_path)
+    # todo:
+    if os.environ.get("OCR_VENDOR") == 'mock':
+        text = mock_ocr(doc_path)
     else:
         text = ruizhen_ocr(doc_path)
 
     logging.debug(f"[{doc_path}] ocr result:\n {text}]")
     return text
-
 
 

@@ -12,7 +12,7 @@ from provider.llm_gemini import LLMGemini
 from provider.llm_moonshot import LLMMoonshot
 from provider.llm_openai import LLMOpenAI
 from provider.llm_rpa_chatgpt import ChatGPTRPA
-from provider.prompt import base_prompt
+from web.extractor import get_prompt_template
 
 
 class Channel(Enum):
@@ -65,23 +65,7 @@ def remove_illegal(json_str):
     return updated_string
 
 
-# 后处理
-def after_extract(result):
-    # 提取字符串中的json数组部分
-    result = result[result.find('['):result.rfind(']') + 1]
-    # 去除 JSON 字符串中的单行注释
-    result = re.sub(r'//.*', '', result)
-    # 去除usage产生的可能错误的JSON字符串
-    result = re.sub(r'^.*?"Usage": .*? - .*(?=\n|$)', '', result, flags=re.MULTILINE)
-    # 处理 JSON 字符串中的算术表达式
-    result = remove_illegal(result)
-
-    try:
-        ret = json.loads(result)
-    except Exception as e:
-        print(f"json.loads出错：{e}")
-        return """ {"Doc Type": "json.loads出错"}"""
-
+def after_extract_electricity(ret):
     # 遍历列表，item如果没有Usage，则通过计算获取
     new_order = ['Type', 'Date', 'Current reading', 'Last reading', 'Usage', 'Multiplier', 'Unit price', 'Total amount',
                  'Additional fees']
@@ -110,6 +94,10 @@ def after_extract(result):
 
             ret[i] = {key: item[key] for key in new_order if key in item}
 
+    return ret
+
+
+def get_chs_info():
     chs_info = {
         "Type": "费用类型",
         "Date": "抄表日期",
@@ -125,15 +113,45 @@ def after_extract(result):
         "Additional fees": "附加费用",
     }
 
-    # 将英文key 转换为中文
-    for i, item in enumerate(ret):
-        transformed_ret = {
-            chs_info[key]: value
-            for key, value in item.items()
-            if key in chs_info  # and value is not None and value != ""
-        }
+    chs_info = {
+        "Order number": "订单号",
+        "Date": "送货时间",
+        "Product code": "产品代码",
+        "Product name": "产品描述",
+        "Amount due": "应收金额",
+        "Quantity": "数量",
+    }
 
-        ret[i] = transformed_ret
+    return chs_info
+
+
+# 后处理
+def after_extract(result):
+    # 提取字符串中的json数组部分
+    result = result[result.find('['):result.rfind(']') + 1]
+    # 去除 JSON 字符串中的单行注释
+    result = re.sub(r'//.*', '', result)
+    # 去除usage产生的可能错误的JSON字符串
+    result = re.sub(r'^.*?"Usage": .*? - .*(?=\n|$)', '', result, flags=re.MULTILINE)
+    # 处理 JSON 字符串中的算术表达式
+    result = remove_illegal(result)
+
+    try:
+        ret = json.loads(result)
+    except Exception as e:
+        print(f"json.loads出错：{e}")
+        return """ {"Doc Type": "json.loads出错"}"""
+
+    # 将英文key 转换为中文
+    # chs_info = get_chs_info()
+    # for i, item in enumerate(ret):
+    #     transformed_ret = {
+    #         chs_info[key]: value
+    #         for key, value in item.items()
+    #         if key in chs_info  # and value is not None and value != ""
+    #     }
+    #
+    #     ret[i] = transformed_ret
 
     return json.dumps(ret, ensure_ascii=False, indent=4)
 
@@ -169,6 +187,9 @@ def extract(text, text_id="", socket_io=None):
         ]
     """
 
+    base_prompt = get_prompt_template()
+    print("使用prompt template：\n", base_prompt)
+
     if channel == Channel.RPA:
         rpa = ChatGPTRPA()
         return rpa.generate_text(text, base_prompt, text_id)
@@ -177,7 +198,7 @@ def extract(text, text_id="", socket_io=None):
         return LLMOpenAI("gpt-3.5-turbo-1106", True, socket_io).generate_text(text, base_prompt, text_id)
 
     if channel == channel.GPT4:
-        return LLMOpenAI("gpt-4-1106-preview", True, socket_io).generate_text(text, base_prompt, text_id)
+        return LLMOpenAI("gpt-4-turbo-preview", True, socket_io).generate_text(text, base_prompt, text_id)
 
     if channel == channel.GEMINI_PRO:
         return LLMGemini("gemini-pro").generate_text(text, base_prompt, text_id)
@@ -186,7 +207,7 @@ def extract(text, text_id="", socket_io=None):
         return LLMAzureOpenAIStream(True, socket_io).generate_text(text, base_prompt, text_id)
 
     if channel == channel.MOONSHOT:
-        return LLMMoonshot("moonshot-v1-8k").generate_text(text, base_prompt, text_id)
+        return LLMMoonshot("moonshot-v1-8k", True, socket_io).generate_text(text, base_prompt, text_id)
     return """ {"Doc Type": "LLM配置错误"}"""
 
 

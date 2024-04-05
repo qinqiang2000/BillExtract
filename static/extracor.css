@@ -1,0 +1,297 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  height: 100%;
+  position: relative;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit
+}
+
+.left-panel {
+  width: 12%;
+  /* Adjust the width as needed */
+  background: #f9f9f9;
+  /* Uniform grey background */
+  padding: 20px;
+  /* overflow-y: auto; */
+  /* Enables scrolling if content overflows */
+  color: black;
+  /* Ensure text color is black */
+  z-index: 2;
+  /* Ensure the left panel is above the right panel */
+
+  .link-wrapper>div {
+    margin-bottom: 9px;
+    /* Adjust the value as needed */
+  }
+
+  a {
+    white-space: nowrap;
+    /* Prevents the text from wrapping */
+    overflow: hidden;
+    /* Hides any content that overflows the element's box */
+    text-overflow: ellipsis;
+    /* Adds an ellipsis to indicate hidden overflow */
+    display: block;
+    /* Makes the anchor occupy its own line */
+    /* margin-bottom: 10px; */
+    /* Adds some space below each link */
+    padding: 9px;
+    border-radius: 6px;
+    /* Adds rounded corners to the element */
+  }
+
+  .header-wrapper {
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+
+  .header {
+    position: relative;
+    /* Needed for absolute positioning of the pseudo-element */
+
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+  }
+
+  .header:hover {
+    background-color: #e1e1e1;
+    /* Add other hover styles if needed */
+  }
+
+  .header::after {
+    content: '新的提取器';
+    /* Tooltip text */
+    color: white;
+    /* White text */
+    background-color: black;
+    /* Black background */
+    padding: 4px 8px;
+    /* Some padding around the text */
+    position: absolute;
+    /* Position it relative to the header */
+    left: 100%;
+    /* Position it to the right of the header */
+    top: 50%;
+    /* Start at the vertical center of the header */
+    transform: translateY(-50%);
+    /* Align the tooltip vertically centered */
+    white-space: nowrap;
+    /* Prevent the content from wrapping */
+    z-index: 1;
+    /* Make sure it's above other content */
+    border-radius: 4px;
+    /* Optional: if you want rounded corners */
+    font-size: 0.8rem;
+    /* Adjust font size as needed */
+    margin-left: 10px;
+    /* Space between the header and the tooltip */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* Optional: to add a little shadow for depth */
+    pointer-events: none;
+    /* Prevents the pseudo-element from blocking pointer events */
+    opacity: 0;
+    /* Start with an opacity of 0 */
+    transition: opacity 0.3s ease;
+    /* Animate the opacity */
+    z-index: 3;
+    /* This ensures the tooltip is above both panels */
+  }
+
+  .header:hover::after {
+    opacity: 1;
+    /* Change the opacity to 1 on hover */
+  }
+
+  .header .logo {
+    width: 24px;
+    height: 24px;
+    /* Adjust the size of your logo */
+    margin-right: 8px;
+    /* Spacing between logo and title */
+  }
+
+  svg.icon-md {
+    fill: currentColor;
+    /* SVG fill takes the color of the text */
+    margin-left: auto;
+    /* Pushes the icon to the right */
+  }
+  
+  .link-wrapper svg.icon-md:hover {
+    color: #676767;
+  }
+
+  .extractor-link.active {
+    background-color: #cdcdcd;
+  }
+
+  .extractor-link {
+    position: relative; /* Set the position context for the pseudo-element */
+    /* padding-right: 30px;  */
+  }
+
+  .link-icon {
+    display: none; /* Hide the icon by default */
+    position: absolute; /* Position the icon absolutely within .extractor-link */
+    right: 5px; /* Set the icon 5px from the right edge; adjust as needed */
+    top: 50%; /* Set the icon in the middle of the .extractor-link */
+    transform: translateY(-50%); /* Center the icon vertically */
+    /* ... other styles ... */
+  }
+  
+  .extractor-link:hover .link-icon {
+    display: inline-block; /* Show the icon on hover */
+  }
+}
+
+.right-panel {
+  width: 100%;
+  /* Adjust the width as needed */
+  background: #fff;
+  /* White background */
+  padding: 20px;
+  overflow-y: auto;
+  /* Enables scrolling if content overflows */
+  z-index: 1;
+
+  .tab-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+
+  .tab-list-item {
+    padding: 10px 20px;
+    border-bottom: none;
+    margin-right: 5px;
+    cursor: pointer;
+    border-bottom: 1px #ccc;
+    margin-bottom: -1px;
+    /* Pull the tab down to cover the top border of the content */
+  }
+
+  .tab-list-item.active {
+    background-color: white;
+    color: #2B6CB0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+  }
+
+  .tab-content {
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+    border-top: 1px solid #ccc;
+    padding: 20px;
+    display: none;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  .prompt-text {
+    width: 100%;
+    /* Full width */
+    height: 280px;
+    /* Initial height */
+    padding: 10px;
+    /* Padding inside the textarea */
+    border: 1px solid #ccc;
+    /* Border as per the design */
+    border-radius: 4px;
+    /* Rounded corners */
+    resize: vertical;
+    /* Allow only vertical resizing */
+    font-family: 'Arial', sans-serif;
+    /* Example font, change as needed */
+    font-size: 1rem;
+    /* Example font size, change as needed */
+    /* box-shadow: inset 0 1px 8px -3px #ababab; */
+    /* Inner shadow for depth */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+  }
+
+  /* Style the placeholder text */
+  .prompt-text::placeholder {
+    color: #ababab;
+    /* Placeholder text color */
+  }
+
+  h1[contenteditable="true"] {
+    /* Some padding for visual appeal */
+    cursor: text;
+    /* Change cursor to indicate text can be edited */
+  }
+
+  [contenteditable="true"]:empty:before {
+    content: attr(data-placeholder);
+    color: grey;
+    cursor: text;
+    display: block; /* For line-height to take effect */
+  }
+  
+  .create-button {
+    background-color: #f9f9f9;
+    /* Light grey background for enabled state */
+    color: black;
+    /* Black text for enabled state */
+    border: 1px solid #ccc;
+    /* Border color */
+    border-radius: 8px;
+    /* Less rounded borders */
+    padding: 10px 20px;
+    /* Padding inside the button */
+    font-size: 1rem;
+    /* Font size */
+    cursor: pointer;
+    /* Cursor to indicate it's clickable */
+    outline: none;
+    /* Remove the outline */
+    margin-top: 20px;
+    /* Margin above the button */
+    width: 100%;
+    /* Full width to match the textarea */
+    box-sizing: border-box;
+    /* Include padding and border in the width */
+    text-align: center;
+    /* Center the text inside the button */
+    transition: background-color 0.2s, color 0.2s;
+    /* Transition for background and text color */
+  }
+
+  .create-button:hover {
+    background-color: #e6e6e6;
+    /* Slightly darker background on hover for enabled state */
+  }
+
+  .create-button:disabled {
+    background-color: white;
+    /* White background for disabled state */
+    color: #aaa;
+    /* Lighter text for disabled state */
+    cursor: default;
+    /* Default cursor for disabled state */
+    box-shadow: none;
+    /* No shadow for disabled state */
+  }
+}

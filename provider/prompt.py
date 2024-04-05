@@ -1,6 +1,5 @@
 
-# 基础prompt
-base_prompt = """
+electricity_water_prompt = """
 根据用户给出的OCR后的内容，识别出是否包含1份或多份的水费或电费的收费通知信息，
 1.如果是电费信息，提取并记录以下要素：
 -费用类型（Type）: 固定为："电费"
@@ -32,6 +31,53 @@ base_prompt = """
 -仅输出JSON数组，不包含其他文字。
 """
 
+delivery_prompt = """
+根据用户给出的OCR后的送货单内容，识别出送货单的详细要素，包括：
+-订单号(Order number)：订单号
+-产品代码(Product code)：产品代码, 4位数字的产品代码，其他长度不是
+-产品描述(Product name)：产品描述或名称
+-应收金额(Amount due)：应收金额
+-数量(Quantity)：数量
+
+注意：
+-OCR的结果可能有误，你需要结合上下文语义进行综合判断，以抽取准确的关键信息
+-仅输出JSON一维数组，不包含其他文字。
+"""
+
+delivery_schema_prompt = """
+根据用户给出的OCR后的送货单内容，识别出送货单的详细要素，要素的json schema：
+[
+"name": "送货单",
+"description": "固定为送货单"
+"properties": {
+      "订单号": {
+        "type": "string",
+        "description": "订单号"
+      },
+      "产品代码": {
+        "type": "string",
+        "description": "产品代码，是提取长度为4的代码"
+      },
+      "数量": {
+        "type": "string",
+        "description": "数量"
+      },
+      "应收金额": {
+        "type": "string",
+        "description": "应收金额"
+      }
+}]
+
+注意：
+-OCR的结果可能有误，你需要结合上下文语义进行综合判断，以抽取准确的关键信息
+-仅按json schema输出JSON一维数组，不包含其他文字。
+"""
+# 基础prompt
+base_prompt = delivery_schema_prompt
+
 # 根据不同的每个LLM的习性，额外增加定制化的prompt
 gemini_prompt = """
+"""
+moonshot_prompt = base_prompt + """
+-检查输出字符串，要求符合json格式
 """

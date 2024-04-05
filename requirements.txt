@@ -1,6 +1,7 @@
 python-dotenv
 flask
 flask_socketio
+flask_cors
 python-dateutil
 openai
 requests
@@ -9,6 +10,8 @@ opencc-python-reimplemented
 pandas
 pdfplumber
 frontend
+sqlalchemy
+psycopg2
 PyMuPDF==1.23.8
 tools
 openpyxl

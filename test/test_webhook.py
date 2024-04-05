@@ -21,9 +21,9 @@ def webhook():
     try:
         os.chdir(work_dir)
         subprocess.run(['sh', "start.sh"], check=True)
-        logging.debug("Successfully executed the script.")
+        logging.debug("Successfully executed the scripts.")
     except Exception as e:
-        logging.debug(f"Error executing the script: {e}")
+        logging.debug(f"Error executing the scripts: {e}")
 
     return 'Success', 200
 

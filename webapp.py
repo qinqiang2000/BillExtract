@@ -4,14 +4,16 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, send_from_directory, jsonify
-from flask_socketio import SocketIO
+from web.extractor import extractor
+from web.extract import extract
 
+from flask_socketio import SocketIO
+from flask_cors import CORS
 from provider import llm
 from labeling.data import ExcelHandler
 import threading
 import queue
 from retrieval.doc_loader import async_load
-
 
 load_dotenv(override=True)
 
@@ -19,6 +21,11 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制文件大小为16MB
 app.logger.setLevel(logging.DEBUG)
+CORS(app)  # This will enable CORS for all routes
+
+# 注册各个模块的 Blueprint
+app.register_blueprint(extractor)
+app.register_blueprint(extract)
 
 socketio = SocketIO(app)
 
@@ -50,33 +57,14 @@ def index():
     return render_template('pdf_viewer.html', filename=None)
 
 
+@app.route('/e')
+def extractor():
+    return render_template('extractor.html', filename=None)
+
+
 # 处理标注的数据（哪一个文件，哪一页的哪个要素key识别不好, 标注的值value是）
 @app.route('/down', methods=['POST'])
 def handle_icon_click():
-    # data = request.json
-    # filename = data['filename']
-    # page = int(data['page'])  # 从1开始
-    # key = data['key']
-    # val = data['value']
-    # clicked = data['clicked']
-    #
-    # if not f"{filename}_{page}" in llm_result:
-    #     return jsonify({'status': 'error', 'msg': f'{filename}和{page}没有对应的数据'})
-    #
-    # ret = llm_result[f"{filename}_{page}"]
-    # raw = ocr_result[f"{filename}_{page}"]
-    #
-    # anno_json = json.loads(anno_result[f"{filename}_{page}"])
-    # anno_json[key] = val
-    # anno = anno_result[f"{filename}_{page}"] = json.dumps(anno_json, ensure_ascii=False, indent=4)
-    #
-    # if clicked:
-    #     excel_handler.update_row(filename, page, ret, anno, key, raw)
-    # else:
-    #     excel_handler.remove_key_from_down(filename, page, key)
-    #
-    # excel_handler.save_dataframe_to_excel()
-
     return jsonify({'status': 'success'})
 
 
@@ -95,12 +83,13 @@ def switch_channel():
         llm.switch_channel(channel)
         app.logger.info(f"切换到频道 {llm.Channel(channel)}")
         return jsonify({'status': 'success', 'msg': f'频道 {llm.Channel(channel)} 切换成功'})
-    # 如果channel不是数字，说明是切换pdf解析方法
     else:
-        global pdf_parser
-        pdf_parser = data['channel']
-        app.logger.info(f"切换到pdf解析方法 {pdf_parser}")
-        return jsonify({'status': 'success', 'msg': f'切换到pdf解析方法[ {pdf_parser}] 切换成功'})
+        c = data['channel']
+        if c == 'r':
+            os.environ['OCR_VENDOR'] = 'ruizhen'
+        elif c == 'm':
+            os.environ['OCR_VENDOR'] = 'mock'
+        return jsonify({'status': 'success', 'msg': f'ocr_vendor {os.environ["OCR_VENDOR"]} 切换成功'})
 
 
 @app.route('/text', methods=['POST'])
@@ -209,5 +198,6 @@ def info_data(data, page):
 
 
 if __name__ == '__main__':
-    socketio.run(app, allow_unsafe_werkzeug=True, host="0.0.0.0", port=8000)
+
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True, host="0.0.0.0", port=8000)
 
